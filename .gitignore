@@ -1,0 +1,69 @@
+# User-specific files from Visual Studio and other tools
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+artifacts/
+
+# Visual Studio 2019/2022 cache/options directory
+.vs/
+
+# Visual Studio Code directories
+.vscode/
+
+# Rider directories
+.idea/
+
+# Dotnet generated files
+project.lock.json
+project.fragment.lock.json
+
+# Tooling
+*.jfm
+*.pfx
+*.snk
+
+# Mac formatting
+.DS_Store
+
+# Logs and databases
+[Ll]ogs/
+*.log
+*.mdf
+*.ldf
+*.db
+
+# Docker secrets and local environment files
+secrets/
+*.env
+
+# NuGet Packages folder (if not global) and temporary files
+*.nupkg
+*.nuget.props
+*.nuget.targets
+packages/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+*.DotSettings.user
+
+# Local development settings files that should not be committed
+appsettings.Development.json
+launchSettings.json # Often contains environment variables specific to a user's machine
