@@ -49,6 +49,5 @@ https://github.com/nadirbad/VerticalSliceArchitecture?
 
 https://codewithmukesh.com/blog/cqrs-and-mediatr-in-aspnet-core
 
-https://medium.com/%40mmudarrib2807/
+[https://medium.com/%40mmudarrib2807/](https://medium.com/@mmudarrib2807/mastering-vertical-slice-architecture-in-net-core-a-clean-scalable-approach-to-web-api-design-6f6813488d17)
 
-mastering-vertical-slice-architecture-in-net-core-a-clean-scalable-approach-to-web-api-design-6f6813488d17
