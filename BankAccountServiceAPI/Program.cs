@@ -1,4 +1,5 @@
 
+using System.Reflection;
 using BankAccountServiceAPI.Infrastructure.CurrenciesSupport;
 using BankAccountServiceAPI.Infrastructure.MockCustomerVerification;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
@@ -52,9 +53,25 @@ namespace BankAccountServiceAPI
                     Title = "Account Service API",
                     Description = "ћикросервис дл€ управлени€ банковскими счетами"
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
 
             var app = builder.Build();
+
+            var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: myAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
@@ -70,6 +87,8 @@ namespace BankAccountServiceAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(myAllowSpecificOrigins);
 
             app.UseAuthorization();
 

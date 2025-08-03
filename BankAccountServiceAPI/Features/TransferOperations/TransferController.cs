@@ -17,7 +17,11 @@ namespace BankAccountServiceAPI.Features.TransferOperations
             _mediator = mediator;
         }
 
-
+        /// <summary>
+        /// Выполнение перевода между счетами
+        /// </summary>
+        /// <param name="command"></param> Команда с данными необходимыми чтобы осуществить перевод
+        /// <returns></returns> ActionResult с информацией о транзакции
         [ProducesResponseType(typeof(ShowTransactionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -9,16 +9,24 @@ namespace BankAccountServiceAPI.Features.TransferOperations.MakeTransfer
 {
     public class MakeTransferCommand : IRequest<MbResult<ShowTransactionDto>>
     {
-        //public Guid Id { get; set; }
+        /// <summary>
+        /// Уникальный идентификатор счёта с которого совершется перевод
+        /// </summary>
         public Guid AccountId { get; set; }
 
-        public Guid CounterPartyAccountId { get; set; } // Учетная запись контрагента(Куда переводят деньги)
+        /// <summary>
+        /// Уникальный идентификатор счёта на который совершается перевод
+        /// </summary>
+        public Guid CounterPartyAccountId { get; set; } 
 
-        public decimal Amount { get; set; } //Сумма перевода
+        /// <summary>
+        /// Сумма перевода
+        /// </summary>
+        public decimal Amount { get; set; } 
 
-
-        //public TransactionInOrOut TransactionInOrOut { get; set; }
-
+        /// <summary>
+        /// Комментарии к переводу
+        /// </summary>
         public string? MetaData { get; set; }
     }
 }
