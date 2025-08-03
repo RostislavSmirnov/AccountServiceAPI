@@ -22,7 +22,11 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
             _mediator = mediator;
         }
 
-
+        /// <summary>
+        /// Создает новый банковский счет.
+        /// </summary>
+        /// <param name="command">Команда с данными для создания счета (ID владельца, тип счета, валюта и т.д.).</param>
+        /// <returns>IActionResult с ID созданного счета и статусом HTTP 201 или HTTP 400 при неверном запросе.</returns>
         [HttpPost("BankAccounts")]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,6 +43,11 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
         }
 
 
+        /// <summary>
+        /// Удаляет банковский счет по его ID.
+        /// </summary>
+        /// <param name="Id">Уникальный идентификатор счета для удаления.</param>
+        /// <returns>IActionResult со статусом HTTP 204 при успехе или HTTP 404, если счет не найден.</returns>
         [ProducesResponseType(typeof(MbResult), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("BankAccounts/{Id:guid}")]
@@ -50,6 +59,12 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
         }
 
 
+        /// <summary>
+        /// Обновляет существующий банковский счет.
+        /// </summary>
+        /// <param name="Id">Уникальный идентификатор счета для обновления.</param>
+        /// <param name="command">Команда с обновленными данными счета (валюта, процентная ставка и т.д.).</param>
+        /// <returns>ActionResult с обновленными данными счета и статусом HTTP 200, или HTTP 404, если счет не найден, или HTTP 400 при неверном запросе.</returns>
         [ProducesResponseType(typeof(BankAccountDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("BankAccounts/{Id:guid}")]
@@ -61,6 +76,10 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
         }
 
 
+        /// <summary>
+        /// Получает список всех банковских счетов.
+        /// </summary>
+        /// <returns>ActionResult со списком счетов и статусом HTTP 200.</returns>
         [ProducesResponseType(typeof(IEnumerable<BankAccountDto>), StatusCodes.Status200OK)]
         [HttpGet("BankAccounts")]
         public async Task<ActionResult<IEnumerable<BankAccountDto>>> GetAllAccounts()
@@ -71,6 +90,11 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
         }
 
 
+        /// <summary>
+        /// Получает банковский счет по его ID.
+        /// </summary>
+        /// <param name="Id">Уникальный идентификатор счета.</param>
+        /// <returns>ActionResult с данными счета и статусом HTTP 200, или HTTP 404, если счет не найден.</returns>
         [ProducesResponseType(typeof(ActionResult<BankAccountDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("BankAccounts/{Id:guid}")]
@@ -81,7 +105,13 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
             return HandleResult(result);
         }
 
-
+        /// <summary>
+        /// Получает выписку по банковскому счету за указанный период.
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор счета.</param>
+        /// <param name="startDate">Дата начала периода выписки.</param>
+        /// <param name="endDate">Дата окончания периода выписки.</param>
+        /// <returns>IActionResult с выпиской по счету и статусом HTTP 200, или HTTP 404, если счет не найден.</returns>
         [ProducesResponseType(typeof(BankAccountStatement), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id:guid}/Statement")]
