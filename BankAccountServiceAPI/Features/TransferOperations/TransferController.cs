@@ -1,6 +1,7 @@
 ﻿using BankAccountServiceAPI.Common;
 using BankAccountServiceAPI.Features.TransferOperations.MakeTransfer;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace BankAccountServiceAPI.Features.TransferOperations
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransferController : ApiControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,8 +22,8 @@ namespace BankAccountServiceAPI.Features.TransferOperations
         /// <summary>
         /// Выполнение перевода между счетами
         /// </summary>
-        /// <param name="command"></param> Команда с данными необходимыми чтобы осуществить перевод
-        /// <returns></returns> ActionResult с информацией о транзакции
+        /// <param name="command"> Команда с данными необходимыми чтобы осуществить перевод </param> 
+        /// <returns> ActionResult с информацией о транзакции </returns> 
         [ProducesResponseType(typeof(ShowTransactionDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
