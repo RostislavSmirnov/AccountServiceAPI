@@ -1,6 +1,7 @@
 ﻿using BankAccountServiceAPI.Common;
 using BankAccountServiceAPI.Features.TransferOperations.MakeTransfer;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace BankAccountServiceAPI.Features.TransferOperations
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransferController : ApiControllerBase
     {
         private readonly IMediator _mediator;

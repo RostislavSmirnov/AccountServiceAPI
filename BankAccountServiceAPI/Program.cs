@@ -12,6 +12,7 @@ using BankAccountServiceAPI.Common.Behaviors;
 using FluentValidation;
 using MediatR;
 using BankAccountServiceAPI.MiddleWare;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BankAccountServiceAPI
 {
@@ -20,6 +21,19 @@ namespace BankAccountServiceAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    //Адрес  и название нашего реалма
+                    options.Authority = "http://localhost:8080/realms/bank-realm";
+                    //Имя нашего клиента в Keycloak. Должно совпадать с Client ID.
+                    options.Audience = "bank-account-api";
+                    //Отключаем требование HTTPS для локальной разработки
+                    options.RequireHttpsMetadata = false;
+                });
+
+            builder.Services.AddAuthorization();
 
             //Заглушки
             builder.Services.AddSingleton<IMockBankAccountRepository, MockBankAccountRepository>();
@@ -94,6 +108,8 @@ namespace BankAccountServiceAPI
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
