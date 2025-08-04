@@ -29,9 +29,9 @@
 
     public class MbResult<T> : MbResult
     {
-        public bool IsSuccess { get; } // Успешность операции, если "true" - ошибок нет
+        public bool IsSuccess { get; } //Успешность операции, если "true" - ошибок нет
 
-        public T Value { get; } // Данные возвращаемые в случае успеха
+        public T Value { get; } //Данные возвращаемые в случае успеха
 
         public IEnumerable<MbError> Errors { get; } //Список ошибок в случае неудачи
 

@@ -1,4 +1,5 @@
 
+using System.Reflection;
 using BankAccountServiceAPI.Infrastructure.CurrenciesSupport;
 using BankAccountServiceAPI.Infrastructure.MockCustomerVerification;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
@@ -11,6 +12,8 @@ using BankAccountServiceAPI.Common.Behaviors;
 using FluentValidation;
 using MediatR;
 using BankAccountServiceAPI.MiddleWare;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace BankAccountServiceAPI
 {
@@ -19,6 +22,19 @@ namespace BankAccountServiceAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    //Адрес  и название нашего реалма
+                    options.Authority = "http://keycloak:8080/realms/bank-realm";
+                    //Имя нашего клиента в Keycloak. Должно совпадать с Client ID.
+                    options.Audience = "account";
+                    //Отключаем требование HTTPS для локальной разработки
+                    options.RequireHttpsMetadata = false;
+                });
+
+            builder.Services.AddAuthorization();
 
             //Заглушки
             builder.Services.AddSingleton<IMockBankAccountRepository, MockBankAccountRepository>();
@@ -52,27 +68,78 @@ namespace BankAccountServiceAPI
                     Title = "Account Service API",
                     Description = "Микросервис для управления банковскими счетами"
                 });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    //Описание для UI
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    //Имя заголовка, в котором будет передаваться токен
+                    Name = "Authorization",
+                    //Расположение токена (в заголовке)
+                    In = ParameterLocation.Header,
+                    //Тип схемы
+                    Type = SecuritySchemeType.Http,
+                    //Схема аутентификации
+                    Scheme = "bearer",
+                    //Формат токена
+                    BearerFormat = "JWT"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
+
+            var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: myAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
             });
 
             var app = builder.Build();
 
+
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            //if (app.Environment.IsDevelopment())
+            //{
+            //}
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Account API V1");
-                    options.RoutePrefix = string.Empty;
-                });
-            }
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Account API V1");
+                options.RoutePrefix = "swagger";
+            });
 
-            app.UseHttpsRedirection();
 
+            //app.UseHttpsRedirection();
+            
+            app.UseCors(myAllowSpecificOrigins);
+
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

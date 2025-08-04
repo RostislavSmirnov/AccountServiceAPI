@@ -30,8 +30,8 @@
       "publishAllPorts": true,
       "httpPort": 8001,
       "useSSL": false
-     }
-    },
+    }
+  },
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
