@@ -9,11 +9,13 @@ using BankAccountServiceAPI.Features.BankAccountOperations.EditBankAccount;
 using BankAccountServiceAPI.Features.BankAccountOperations.GetBankAccountById;
 using BankAccountServiceAPI.Features.BankAccountOperations.GetBankAccounts;
 using BankAccountServiceAPI.Features.BankAccountOperations.GetBankAccountStatement;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BankAccountOperationsController : ApiControllerBase
     {
         private readonly IMediator _mediator;

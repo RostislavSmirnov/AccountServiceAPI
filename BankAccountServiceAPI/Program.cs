@@ -13,6 +13,7 @@ using FluentValidation;
 using MediatR;
 using BankAccountServiceAPI.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace BankAccountServiceAPI
 {
@@ -26,9 +27,9 @@ namespace BankAccountServiceAPI
                 .AddJwtBearer(options =>
                 {
                     //Адрес  и название нашего реалма
-                    options.Authority = "http://localhost:8080/realms/bank-realm";
+                    options.Authority = "http://keycloak:8080/realms/bank-realm";
                     //Имя нашего клиента в Keycloak. Должно совпадать с Client ID.
-                    options.Audience = "bank-account-api";
+                    options.Audience = "account";
                     //Отключаем требование HTTPS для локальной разработки
                     options.RequireHttpsMetadata = false;
                 });
@@ -68,6 +69,37 @@ namespace BankAccountServiceAPI
                     Description = "Микросервис для управления банковскими счетами"
                 });
 
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    //Описание для UI
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    //Имя заголовка, в котором будет передаваться токен
+                    Name = "Authorization",
+                    //Расположение токена (в заголовке)
+                    In = ParameterLocation.Header,
+                    //Тип схемы
+                    Type = SecuritySchemeType.Http,
+                    //Схема аутентификации
+                    Scheme = "bearer",
+                    //Формат токена
+                    BearerFormat = "JWT"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
@@ -105,8 +137,6 @@ namespace BankAccountServiceAPI
             //app.UseHttpsRedirection();
             
             app.UseCors(myAllowSpecificOrigins);
-
-            app.UseAuthorization();
 
             app.UseAuthentication();
             app.UseAuthorization();
