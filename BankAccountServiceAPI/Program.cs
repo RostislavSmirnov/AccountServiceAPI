@@ -59,8 +59,6 @@ namespace BankAccountServiceAPI
                 options.IncludeXmlComments(xmlPath);
             });
 
-            var app = builder.Build();
-
             var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
             builder.Services.AddCors(options =>
             {
@@ -73,21 +71,25 @@ namespace BankAccountServiceAPI
                     });
             });
 
+            var app = builder.Build();
+
+
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            //if (app.Environment.IsDevelopment())
+            //{
+            //}
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Account API V1");
-                    options.RoutePrefix = string.Empty;
-                });
-            }
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Account API V1");
+                options.RoutePrefix = "swagger";
+            });
 
-            app.UseHttpsRedirection();
 
+            //app.UseHttpsRedirection();
+            
             app.UseCors(myAllowSpecificOrigins);
 
             app.UseAuthorization();
