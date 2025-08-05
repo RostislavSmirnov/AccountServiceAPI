@@ -47,7 +47,7 @@ namespace BankAccountServiceAPI.Common.Behaviors
 
             var responseType = typeof(TResponse);
 
-            //Обрабатываем случай для обобщенного MbResult<T>
+            //Обработка случай для обобщенного MbResult<T>
             if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(MbResult<>))
             {
                 var genericArgument = responseType.GetGenericArguments()[0];
@@ -63,13 +63,12 @@ namespace BankAccountServiceAPI.Common.Behaviors
                 return (TResponse)failureMethod.Invoke(null, [errors]);
             }
 
-            // Обрабатываем случай для необобщенного MbResult
+            // Обработка случая для необобщенного MbResult
             // ReSharper disable once InvertIf Решарпер предлогает непонятное для меня решение
             if (responseType == typeof(MbResult))
             {
                 var failureMethod = typeof(MbResult).GetMethod(nameof(MbResult.Failure), [typeof(IEnumerable<MbError>)]);
 
-                // Добавляем надежную проверку на null
                 if (failureMethod == null)
                 {
                     throw new InvalidOperationException($"Could not find the static method '{nameof(MbResult.Failure)}' on type '{nameof(MbResult)}'.");

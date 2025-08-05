@@ -26,7 +26,7 @@ namespace BankAccountServiceAPI
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    //Адрес  и название нашего реалма
+                    //Адрес и название реалма
                     options.Authority = "http://keycloak:8080/realms/bank-realm";
                     //Имя нашего клиента в Keycloak. Должно совпадать с Client ID.
                     options.Audience = "account";
