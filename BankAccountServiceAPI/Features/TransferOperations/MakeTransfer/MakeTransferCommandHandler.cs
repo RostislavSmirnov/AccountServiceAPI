@@ -5,15 +5,21 @@ using BankAccountServiceAPI.Entities.Enums;
 using BankAccountServiceAPI.Infrastructure.CurrenciesSupport;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
 using MediatR;
+// ReSharper disable All считаю что явная типизация тут улучшает читаемость
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.TransferOperations.MakeTransfer
 {
+    /// <summary>
+    /// Обработчик команды выполнения перевода
+    /// </summary>
     public class MakeTransferCommandHandler : IRequestHandler<MakeTransferCommand, MbResult<ShowTransactionDto>>
     {
         private readonly IMapper _mapper;
         private readonly IMockBankAccountRepository _mockBankAccountRepository;
         private readonly ICurrencyService _currencyService;
 
+        // ReSharper disable once ConvertToPrimaryConstructor считаю обычный конструктор более читаемым
         public MakeTransferCommandHandler(IMapper mapper, IMockBankAccountRepository mockBankAccountRepository, ICurrencyService currencyService)
         {
             _mapper = mapper;

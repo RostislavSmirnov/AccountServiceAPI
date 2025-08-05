@@ -1,9 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using BankAccountServiceAPI.Entities;
-using BankAccountServiceAPI.Features.BankAccountOperations;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Infrastructure.MockRepository
 {
+    /// <summary>
+    /// Клсс описывающий CRUD операции в репозитории
+    /// </summary>
     public class MockBankAccountRepository : IMockBankAccountRepository
     {
         private readonly ConcurrentDictionary<Guid, BankAccount> _mockRepository = new ConcurrentDictionary<Guid, BankAccount>();

@@ -1,9 +1,12 @@
 ﻿using BankAccountServiceAPI.Entities.Enums;
 using FluentValidation;
-using FluentValidation.Validators;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations.CreateBankAccount
 {
+    /// <summary>
+    /// Класс валидации создания счёта
+    /// </summary>
     public class CreateBankAccountCommandValidator : AbstractValidator<CreateBankAccountCommand>
     {
         public CreateBankAccountCommandValidator()

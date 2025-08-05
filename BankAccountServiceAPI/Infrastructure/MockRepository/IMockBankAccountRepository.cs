@@ -1,8 +1,11 @@
 ﻿using BankAccountServiceAPI.Entities;
-using BankAccountServiceAPI.Features.BankAccountOperations;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Infrastructure.MockRepository
 {
+    /// <summary>
+    /// Интерфейс заглушки  репозитория создания счетов
+    /// </summary>
     public interface IMockBankAccountRepository
     {
         Task<BankAccount> CreateBankAccount(BankAccount account);

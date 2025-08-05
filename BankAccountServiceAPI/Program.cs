@@ -3,20 +3,20 @@ using System.Reflection;
 using BankAccountServiceAPI.Infrastructure.CurrenciesSupport;
 using BankAccountServiceAPI.Infrastructure.MockCustomerVerification;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
-using Microsoft.AspNetCore.Builder;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
-using Swashbuckle.AspNetCore.SwaggerUI;
 using BankAccountServiceAPI.Common.Behaviors;
-using FluentValidation;
-using MediatR;
 using BankAccountServiceAPI.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI
 {
+    /// <summary>
+    /// Класс прохождения запроса, и общей конфигурации
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)
@@ -26,7 +26,7 @@ namespace BankAccountServiceAPI
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    //Адрес  и название нашего реалма
+                    //Адрес и название реалма
                     options.Authority = "http://keycloak:8080/realms/bank-realm";
                     //Имя нашего клиента в Keycloak. Должно совпадать с Client ID.
                     options.Audience = "account";
@@ -62,6 +62,7 @@ namespace BankAccountServiceAPI
             
             builder.Services.AddSwaggerGen(options =>
             {
+                // ReSharper disable once RedundantNameQualifier Предпочту указать явно, для точности.
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Version = "v1",
@@ -96,7 +97,7 @@ namespace BankAccountServiceAPI
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        []
                     }
                 });
 

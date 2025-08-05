@@ -1,9 +1,23 @@
 ﻿namespace BankAccountServiceAPI.Entities.Enums
 {
+    /// <summary>
+    /// Перечисления возможных типов аккаунта
+    /// </summary>
     public enum AccountType
     {
-        Checking, //Обыный счёт
-        Deposit, //Накопительный
-        Credit   //Кредитный счёт
+        /// <summary>
+        /// Обычный счёт
+        /// </summary>
+        Checking,
+
+        /// <summary>
+        /// Накопительный счёт
+        /// </summary>
+        Deposit, 
+
+        /// <summary>
+        /// Кредитный счёт
+        /// </summary>
+        Credit   
     }
 }

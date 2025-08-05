@@ -4,14 +4,20 @@ using BankAccountServiceAPI.Entities;
 using BankAccountServiceAPI.Features.TransferOperations;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
 using MediatR;
+// ReSharper disable All считаю что тут явная типизация улучшает понимание кода
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations.GetBankAccountStatement
 {
+    /// <summary>
+    /// Класс описывабщий выдачу выписки по счёту
+    /// </summary>
     public class GetBankAccountStatementQueryHandler : IRequestHandler<GetBankAccountStatementQuery, MbResult<BankAccountStatement>>
     {
         private readonly IMockBankAccountRepository _mockBankAccountRepository;
         private readonly IMapper _mapper;
 
+        // ReSharper disable once ConvertToPrimaryConstructor считаю обычный конструктор более читаемым 
         public GetBankAccountStatementQueryHandler(IMockBankAccountRepository mockBankAccountRepository, IMapper mapper)
         {
             _mockBankAccountRepository = mockBankAccountRepository;
