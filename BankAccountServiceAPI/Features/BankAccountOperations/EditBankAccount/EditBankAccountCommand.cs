@@ -3,6 +3,9 @@ using MediatR;
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations.EditBankAccount
 {
+    /// <summary>
+    /// Комманда редактирования счёта
+    /// </summary>
     public class EditBankAccountCommand : IRequest<MbResult<BankAccountDto>>
     {
         /// <summary>

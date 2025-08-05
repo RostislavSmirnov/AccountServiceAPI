@@ -5,9 +5,14 @@ using BankAccountServiceAPI.Infrastructure.MockCustomerVerification;
 using BankAccountServiceAPI.Infrastructure.MockRepository;
 using MediatR;
 using BankAccountServiceAPI.Common;
+// ReSharper disable SuggestVarOrType_SimpleTypes
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations.CreateBankAccount
 {
+    /// <summary>
+    /// Обработчик комманды по созданию счёта
+    /// </summary>
     public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccountCommand, MbResult<Guid>>
     {
         private readonly IMockBankAccountRepository _mockBankAccountRepository;
@@ -15,6 +20,7 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations.CreateBankAccount
         private readonly ICurrencyService _currencyService;
         private readonly IMockCustomerVerification _mockCustomerVerification;
 
+        // ReSharper disable once ConvertToPrimaryConstructor Считаю обычный конструктор более читаемым
         public CreateBankAccountCommandHandler(IMockBankAccountRepository mockBankAccountRepository, IMapper mapper, ICurrencyService currencyService, IMockCustomerVerification mockCustomerVerification)
         {
             _mockBankAccountRepository = mockBankAccountRepository;
@@ -42,10 +48,10 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations.CreateBankAccount
                 BankAccount createdBankAccount = await _mockBankAccountRepository.CreateBankAccount(account);
                 return MbResult<Guid>.Success(createdBankAccount.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                return MbResult<Guid>.Failure(new MbError("CreationFailed", $"Произошла внутренняя ошибка при создании счета."));
+                return MbResult<Guid>.Failure(new MbError("CreationFailed", "Произошла внутренняя ошибка при создании счета."));
             }
         }
     }

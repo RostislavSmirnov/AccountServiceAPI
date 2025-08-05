@@ -1,0 +1,39 @@
+Merge branch 'main' of https://github.com/RostislavSmirnov/AccountServiceAPI
+
+# Conflicts:
+#	BankAccountServiceAPI/Properties/launchSettings.json
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please run
+#	git update-ref -d MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch and 'origin/main' have diverged,
+# and have 2 and 7 different commits each, respectively.
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	modified:   .dockerignore
+#	modified:   BankAccountServiceAPI/BankAccountServiceAPI.csproj
+#	modified:   BankAccountServiceAPI/Common/MbResult.cs
+#	new file:   BankAccountServiceAPI/Dockerfile
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/BankAccountOperationsController.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/BankAccountStatement.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/CreateBankAccount/CreateBankAccountCommand.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/DeleteBankAccount/DeleteBankAccountCommand.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/EditBankAccount/EditBankAccountCommand.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/GetBankAccountById/GetBankAccountQuery.cs
+#	modified:   BankAccountServiceAPI/Features/BankAccountOperations/GetBankAccountStatement/GetBankAccountStatementQuery.cs
+#	modified:   BankAccountServiceAPI/Features/TransferOperations/MakeTransfer/MakeTransferCommand.cs
+#	modified:   BankAccountServiceAPI/Features/TransferOperations/ShowTransactionDto.cs
+#	modified:   BankAccountServiceAPI/Features/TransferOperations/TransferController.cs
+#	modified:   BankAccountServiceAPI/Program.cs
+#	modified:   BankAccountServiceAPI/Properties/launchSettings.json
+#	new file:   docker-compose.yml
+#

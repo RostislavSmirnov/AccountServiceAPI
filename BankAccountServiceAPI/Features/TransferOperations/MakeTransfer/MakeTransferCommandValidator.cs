@@ -1,7 +1,11 @@
 ﻿using FluentValidation;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.TransferOperations.MakeTransfer
 {
+    /// <summary>
+    /// Класс валидации выполнения перевода
+    /// </summary>
     public class MakeTransferCommandValidator : AbstractValidator<MakeTransferCommand>
     {
         public MakeTransferCommandValidator()

@@ -1,12 +1,11 @@
-﻿using BankAccountServiceAPI.Entities;
-using BankAccountServiceAPI.Entities.Enums;
-using MediatR;
-using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
 using BankAccountServiceAPI.Common;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BankAccountServiceAPI.Features.TransferOperations.MakeTransfer
 {
+    /// <summary>
+    /// Команда для выполнения переводов между счетами
+    /// </summary>
     public class MakeTransferCommand : IRequest<MbResult<ShowTransactionDto>>
     {
         /// <summary>

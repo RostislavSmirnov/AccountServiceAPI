@@ -1,6 +1,10 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
+// ReSharper disable SuggestVarOrType_Elsewhere
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Common.Behaviors
 {
@@ -10,6 +14,7 @@ namespace BankAccountServiceAPI.Common.Behaviors
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
+        // ReSharper disable once ConvertToPrimaryConstructor Я считаю такой конструктор класса более читаемым.
         public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
         {
             _validators = validators;
@@ -17,44 +22,63 @@ namespace BankAccountServiceAPI.Common.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            if (Equals(!_validators.Any()))
+            // Проверяем, есть ли вообще валидаторы для этого запроса.
+            if (!_validators.Any())
             {
-                //Если для запроса нет валидаторов, просто передаём управление дальше
-                return await next();
+                return await next(cancellationToken);
             }
 
-            ValidationContext<TRequest> validationContext = new ValidationContext<TRequest>(request);
+            var context = new ValidationContext<TRequest>(request);
 
-            //Логика нахождения всех ошибок валидации из всех валидаторов для данного запроса
-            List<ValidationFailure> validationFailures = (await Task.WhenAll(
-                   _validators.Select(v => v.ValidateAsync(validationContext, cancellationToken))))
+            var validationFailures = (await Task.WhenAll(
+                _validators.Select(v => v.ValidateAsync(context, cancellationToken))))
                 .SelectMany(r => r.Errors)
                 .Where(f => f != null)
                 .ToList();
 
-            if (validationFailures.Any())
+            if (!validationFailures.Any())
             {
-                //Если нашлись ошибки валидации, затем превращаем их формат mbError.
-                List<MbError> errors = validationFailures
-                    .Select(f => new MbError(f.ErrorCode, f.ErrorMessage))
-                    .ToList();
-
-                var responseType = typeof(TResponse);
-
-                if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(MbResult<>))
-                {
-                    var genericArgument = responseType.GetGenericArguments()[0];
-                    var resultType = typeof(MbResult<>).MakeGenericType(genericArgument);
-                    var failureMethod = resultType.GetMethod(nameof(MbResult<object>.Failure),new[] { typeof(IEnumerable<MbError>) });
-                    return (TResponse)failureMethod.Invoke(null, new object[] { errors });
-                }
-                else if(responseType == typeof(MbResult))
-                {
-                    var failureMethod = typeof(MbResult).GetMethod(nameof(MbResult.Failure), new[] { typeof(IEnumerable<MbError>) });
-                    return (TResponse)failureMethod.Invoke(null, new object[] { errors });
-                }
+                return await next(cancellationToken);
             }
-            return await next();
+
+            var errors = validationFailures
+                .Select(f => new MbError(f.ErrorCode, f.ErrorMessage))
+                .ToList();
+
+            var responseType = typeof(TResponse);
+
+            //Обрабатываем случай для обобщенного MbResult<T>
+            if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(MbResult<>))
+            {
+                var genericArgument = responseType.GetGenericArguments()[0];
+                var resultType = typeof(MbResult<>).MakeGenericType(genericArgument);
+                var failureMethod = resultType.GetMethod(nameof(MbResult<object>.Failure), [typeof(IEnumerable<MbError>)
+                ]);
+
+                if (failureMethod == null)
+                {
+                    throw new InvalidOperationException($"Could not find the static method '{nameof(MbResult<object>.Failure)}' on generic type '{responseType.Name}'.");
+                }
+
+                return (TResponse)failureMethod.Invoke(null, [errors]);
+            }
+
+            // Обрабатываем случай для необобщенного MbResult
+            // ReSharper disable once InvertIf Решарпер предлогает непонятное для меня решение
+            if (responseType == typeof(MbResult))
+            {
+                var failureMethod = typeof(MbResult).GetMethod(nameof(MbResult.Failure), [typeof(IEnumerable<MbError>)]);
+
+                // Добавляем надежную проверку на null
+                if (failureMethod == null)
+                {
+                    throw new InvalidOperationException($"Could not find the static method '{nameof(MbResult.Failure)}' on type '{nameof(MbResult)}'.");
+                }
+
+                return (TResponse)failureMethod.Invoke(null, [errors]);
+            }
+
+            throw new InvalidOperationException($"Cannot create a failure result for type {responseType.Name}. Ensure all handlers with validation return an MbResult or MbResult<T>.");
         }
     }
 }

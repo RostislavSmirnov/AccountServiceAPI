@@ -1,7 +1,11 @@
 ﻿using FluentValidation;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations.EditBankAccount
 {
+    /// <summary>
+    /// Класс валидации редактирования счёта
+    /// </summary>
     public class EditBankAccountCommandValidator : AbstractValidator<EditBankAccountCommand>
     {
         public EditBankAccountCommandValidator()
@@ -16,9 +20,6 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations.EditBankAccount
             RuleFor(x => x.interestRate)
                 .GreaterThan(0).When(x => x.interestRate.HasValue)
                 .WithMessage("Процентная ставка должна быть больше нуля.");
-            //RuleFor(x => x.ClosedDate)
-            //    .GreaterThanOrEqualTo(DateTime.UtcNow.Date).When(x => x.ClosedDate.HasValue)
-            //    .WithMessage("Дата закрытия не может быть в прошлом.");
         }
     }
 }

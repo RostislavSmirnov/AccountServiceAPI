@@ -1,24 +1,51 @@
 ﻿using BankAccountServiceAPI.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations
 {
+    /// <summary>
+    /// DTO для показа информации о счёте
+    /// </summary>
     public class BankAccountDto
     {
-        public Guid Id { get; set; } //Id Счёта
+        /// <summary>
+        /// Идентификатор счёта
+        /// </summary>
+        public Guid Id { get; init; } //Id Счёта
 
-        public Guid OwnerId { get; set; } //Id владельца счёта
+        /// <summary>
+        /// Идентификатор владельца счёта
+        /// </summary>
+        public Guid OwnerId { get; init; } 
 
-        public AccountType AccountType { get; set; }
+        /// <summary>
+        /// Тип счёта, например кредитный, депозит, стандартный
+        /// </summary>
+        public AccountType AccountType { get; init; }
 
-        public string CurrencyCodeISO { get; set; }
+        /// <summary>
+        /// Код валюты в формате из трёх букв
+        /// </summary>
+        public required string CurrencyCodeISO { get; init; }
 
-        public decimal Balance { get; set; }
+        /// <summary>
+        /// Баланс счёта
+        /// </summary>
+        public decimal Balance { get; init; }
 
-        public decimal InterestRate { get; set; } //Процентная ставка
 
-        public DateTime OpenDate { get; set; }
+        /// <summary>
+        /// Процент на депозитном счёте
+        /// </summary>
+        public decimal InterestRate { get; init; } //Процентная ставка
 
-        public DateTime? CloseDate { get; set; }
+        /// <summary>
+        /// Дата открытия счёта
+        /// </summary>
+        public DateTime OpenDate { get; init; }
+
+        /// <summary>
+        /// Дата закрытия
+        /// </summary>
+        public DateTime? CloseDate { get; init; }
     }
 }

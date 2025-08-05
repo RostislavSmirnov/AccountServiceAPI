@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using BankAccountServiceAPI.Entities;
 using BankAccountServiceAPI.Features.BankAccountOperations.CreateBankAccount;
-using BankAccountServiceAPI.Features.BankAccountOperations.EditBankAccount;
 using BankAccountServiceAPI.Features.TransferOperations;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace BankAccountServiceAPI.Features.BankAccountOperations
 {
+    /// <summary>
+    /// Профиль преобразования для счетов
+    /// </summary>
     public class BankAccountMappingProfile : Profile
     {
         public BankAccountMappingProfile()
@@ -16,7 +19,6 @@ namespace BankAccountServiceAPI.Features.BankAccountOperations
             CreateMap<CreateBankAccountCommand, BankAccount>();
             CreateMap<BankAccount, CreateBankAccountCommand>();
 
-            // Маппинг для создания счета
             CreateMap<CreateBankAccountCommand, BankAccount>();
 
             CreateMap<Transaction, ShowTransactionDto>()

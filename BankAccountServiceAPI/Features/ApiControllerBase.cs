@@ -1,9 +1,12 @@
 ﻿using BankAccountServiceAPI.Common;
 using Microsoft.AspNetCore.Mvc;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member 
 
 namespace BankAccountServiceAPI.Features
 {
-    //Контроллер с универсальным методами обработки
+    /// <summary>
+    /// Контроллер с универсальными методами обработки 
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public abstract class ApiControllerBase : ControllerBase
